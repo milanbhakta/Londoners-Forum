@@ -1,4 +1,12 @@
 body{
+    margin:5px;
+}
+
+.big-banner{
+    background-image: url('images/log.jfif');
+}
+
+/*body{
 	font-family: 'Titillium Web', sans-serif;
 	color: #322D2D;
 	width: 80%;
@@ -97,7 +105,7 @@ nav ul li:hover{
   top:50%;
   left:40%;
 	background-color: #4CAF50; /* Green */
-	opacity: .8;
+	/*opacity: .8;
   border: none;
   color: black;
 	padding:2%;
