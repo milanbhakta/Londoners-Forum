@@ -4,103 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The londoners</title>
-<!--[if lt IE 9]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="index.css">
-<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Titillium+Web" rel="stylesheet">
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+    <link rel = stylesheet href="index.css">
 </head>
 <body>
-
-<div class="gallery-wrap">
-  <div  class="icons hover item-1"></div>
-  <div class="icons hover item-2"></div>
-  <div class="icons hover item-3"></div>
-  <div class="icons hover item-4"></div>
-  <div class="icons hover item-5"></div>
-</div>
-
-<div class="login">
-		<!--<a href="login.html">Log in</a>-->
-    
-	<form method="post">
-        <input type="submit" name = "register" class= "btn btn-primary" value = "Sign up">
-        <input type="submit" name = "login" class= "btn btn-primary" value = "Login">
-    </form>	
-    
-    <?php
-        if(isset($_POST['register'])){
-            header("location: register.php");
-        }
-    
-    if(isset($_POST['login'])){
-            header("location: login.php");
-        }
-    ?>
-	</div>
-		
-<nav>
-	<ul>
-		<li><a href="index.html">Home</a></li>
-		<li><a href="contact.html">Contact us</a></li>
-	</ul>
-</nav>
-
-
-<section id="templates">
-
-<h1>Everything you need and more...</h1>
-	
-	
-<div class="templates_icons">
-	
-    <div class="item"><img src="images/sub-category/news.jpg">
-	<div class="img-text"><a href="post_master.php">News</a></div>
-	</div>
-	
-	<div class="item"><img src="images/sub-category/rent.png">
-	<div class="img-text"><a href="#">renting a house</a></div>
-	</div>
-	
-	<div class="item"><img src="images/sub-category/job.png">
-	<div class="img-text"><a href="#">finding a job</a></div>
-	</div>
-	
-	<div class="item"><img src="images/sub-category/car.png">
-	<div class="img-text"><a href="#">buying a car</a></div>
-	</div>
-	
-	<div class="item"><img src="images/sub-category/carpool.png">
-	<div class="img-text"><a href="#">looking for a ride</a></div>
-	</div>
-	
-	<div class="item"><img src="images/sub-category/chat.png">
-	<div class="img-text"><a href="#">Wanna chat?</a></div>
-	</div>
-
+<!--the first nav with login signup and logo-->
+<nav class ="navbar navbar-dark bg-dark" style="margin:0;">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">The Londoners</a>
     </div>
+    <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-right">
+        
+            <li><a href = "register.php"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+            <li><a href="login.php"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+        
+    </ul>
+  </div>
+</nav>
+    
+    <!--Search bar with picture and search bar-->
+<div id = "header" class = "jumbotron big-banner" style="height:350px;margin:0;">
+<div class = "container">   
+     <p class = "text-center" style = 'color:white;'>"Everything You Want and More !"</p>
+   <input type = "text" placeholder = "Search...." id = "search" name = "search" class = "form-control">
+</div> 	
+   
+</div>
+    
+    <!--the second and main nav-->
+     <nav class = "navbar navbar-inverse">
+    <div class="container-fluid">
+   
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">About-Us</a></li>
+      <li><a href="#">Contact-Us</a></li>
+    </ul>
+  </div>
+</nav>
+    
+<?php
+    
+    display_data();
+    
+    function display_data(){
 
-</section>
+	
+	 $db = new mysqli('localhost','londoners','London123!','Londoners');
+	 
+	 
+	 $query = "select * from category_master;";
+	 
 
+	 if($db->query($query) == true){
+      
+		$rs = $db->query($query); 
+			if($rs->num_rows > 0){
+				$category = array();
+			   while($row = $rs->fetch_assoc()){
+				  array_push($category,$row);
+				  //print_r(category[0]);
+			   }
 
-  
-	<footer id="footer" class="footer-info">
-
+			}else{
+				echo "No threads to display";
+				return;
+				
+			};
 			
-			<p class="footer-links">
-				<a href="#">Home</a>
-				·
-				<a href="#">About</a>
-				·
-				<a href="mailto:webmaster@example.com">Email</a>
-				·
-				<a href="tel:555-555-5555">Call us</a>
-			</p>
-
-			<p class="footer-company-name"> &copy; 2018</p>
-	</footer>
-
+		}else{
+			echo "Connection error";
+			exit;
+		}  
+     
+		$category_len = count($category);
+		
+		for($i = 0; $i < $category_len; $i++){
+			echo "<div id = 'category".$i."' class = 'jumbotron'>";
+			echo "<b><a href = 'post_master.php'<p class = 'this'>".$category[$i]['name']."</p></a></b>";
+			echo "<p class = 'this'><b>Date posted: </b>".$category[$i]['created_datetime']."</p>";
+			echo "<p id = '".$i."' class = 'text-muted'>".$category[$i]['description']."</p>";
+			echo "</div>";
+		}
+		
+        
+  
+	}
+?>
+    
+    
 
 </body>
 </html>
