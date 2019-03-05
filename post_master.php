@@ -1,5 +1,6 @@
 <?php
   session_start();
+ 
 ?>
 
 <?php
@@ -18,45 +19,69 @@
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="index.css">
-<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Titillium+Web" rel="stylesheet">
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+    <link rel = stylesheet href="index.css">
 </head>
 <body>
 
-<div class="gallery-wrap">
-  <div  class="icons hover item-1"></div>
-  <div class="icons hover item-2"></div>
-  <div class="icons hover item-3"></div>
-  <div class="icons hover item-4"></div>
-  <div class="icons hover item-5"></div>
-</div>
-
-
-<nav>
-	<ul>
-		<li><a href="index.html"></a></li>
-		<li><a href="post.html"></a></li>
-		<li><a href="member.html"></a></li>
-		<li><a href="contact.html"></a></li>
-	</ul>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
+  <a class="navbar-brand" href="#">The Londoners</a>
+ 
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="register.php"><span class="fas fa-user"></span> Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="login.php"><span class="fas fa-sign-in-alt"></span> Login</a>
+      </li>
+    </ul>
+  </div>
 </nav>
+
+    
+    <!--Search bar with picture and search bar-->
+<div id = "header" class = "jumbotron big-banner" style="height:350px;margin:0;">
+<div class = "container">   
+     <p class = "text-center" style = 'color:white;'>"Everything You Want and More !"</p>
+   <input type = "text" placeholder = "Search...." id = "search" name = "search" class = "form-control">
+</div> 	
+   
+</div>
+    
+    <!--the second and main nav-->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top"  style = "margin-bottom:50px;">
+
+  <div id="navb" class="navbar-collapse collapse hide">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About Us</a>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="logout.php"><span class="fas fa-sign-in-alt"></span>Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
 	
 <section id="templates">
-<form method="post">
-        <input type = "submit" name = "logout" class = "btn btn-primary" value = "logout"/>
-    </form>
-    
-<?php
-       if(isset($_POST['logout'])){
-           header("location:logout.php");
-       }
-    ?>
+
 <header>
     
 <h2> Category Header</h2>
@@ -135,7 +160,7 @@ function formDisplayPosts($category_id){
 
 	 // get the selected contact details
 	 
-	 $rs = getPostsByCategoryID($category_id ) ;
+	 $rs = getPostsByCategoryID($category_id) ;
 	
 		// $row = $rs->fetch_assoc();
 
@@ -172,13 +197,14 @@ function formDisplayPosts($category_id){
  
  </table>
  <br><br>
+
  <?php 
  $_SESSION['user_type']  ='mbr';
 if ($_SESSION['user_type'] =='mbr') { ?>
 
- <input type="submit" name="btn_new_post" value="Write a new Post" class = "btn-success"> &nbsp;
+ <input type="submit" name="btn_new_post" value="Write a new Post" class = "btn btn-primary" style="margin-bottom:20px;"> &nbsp;
 <?php } ?>
-<input type="submit" name="btn_view_back" value="Back">
+<input type="submit" name="btn_view_back" value="Back" class = "btn btn-primary" style="margin-bottom:20px;>
 			</form>
 
 	
@@ -314,22 +340,10 @@ function validate_formAdd_fields(){
 
 </div>
   
-	<footer id="footer" class="footer-info">
-
-			
-			<p class="footer-links">
-				<a href="#">Home</a>
-				·
-				<a href="#">About</a>
-				·
-				<a href="mailto:webmaster@example.com">Email</a>
-				·
-				<a href="tel:555-555-5555">Call us</a>
-			</p>
-
-			<p class="footer-company-name"> &copy; 2018</p>
-	</footer>
-
-
+	<footer class = "inverse">
+        <div class = "container">
+          <p class = "text-center" style="color:white;margin-top:50px;">&copy; Copyright 2019 The Londoners</p>
+        </div>
+    </footer>
 </body>
 </html>

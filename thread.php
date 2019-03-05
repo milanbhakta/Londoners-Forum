@@ -7,45 +7,98 @@ if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['new_thread'])){
       }
   }
 ?>
+
+<?php
+   
+	 if(isset($_POST['red_posts'])){
+ header("location: http://localhost/app/post_master.php");
+ }
+
+	function save_thread($thread){
+		 $db1= new mysqli('localhost','londoners','London123!','Londoners');
+		 
+		 $qry = "insert into post_threads (post_master_id,member_id,previous_thread_id,thread_data) values (".$_SESSION['thread_post_id'].",".$_SESSION['id'].",1,'".$thread."');";
+ 
+
+		 if($db1->query($qry) !== true){
+		 //echo $_SESSION['id'];
+		 echo "<p style = 'color:red;'>Error in posting! Please try again.</p></br>";
+							 echo $db1->error;
+		 
+		 }else{
+		 echo "<p style = 'color:green;'>New thread created</p></br>";
+		 }
+		 
+	}
+	
+
+	?>			
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
-    <script src ="js/angular.min.js"></script>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The londoners</title>
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="index.css">
-<link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Titillium+Web" rel="stylesheet">
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+    <link rel = stylesheet href="index.css">
 </head>
 <body>
 
-<div class="gallery-wrap">
-  <div  class="icons hover item-1"></div>
-  <div class="icons hover item-2"></div>
-  <div class="icons hover item-3"></div>
-  <div class="icons hover item-4"></div>
-  <div class="icons hover item-5"></div>
-</div>
-
-<nav>
-	<ul>
-		<li><a href="index.html"></a></li>
-		<li><a href="thread.php"></a></li>
-		<li><a href="member.html"></a></li>
-		<li><a href="contact.html"></a></li>
-	</ul>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
+  <a class="navbar-brand" href="#">The Londoners</a>
+ 
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="register.php"><span class="fas fa-user"></span> Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="login.php"><span class="fas fa-sign-in-alt"></span> Login</a>
+      </li>
+    </ul>
+  </div>
 </nav>
-	
+    
+    <!--Search bar with picture and search bar-->
+<div id = "header" class = "jumbotron big-banner" style="height:350px;margin:0;border-radius:0;">
+<div class = "container">   
+     <p class = "text-center" style = 'color:white;'>"Everything You Want and More !"</p>
+   <input type = "text" placeholder = "Search...." id = "search" name = "search" class = "form-control">
+</div> 	
+   
+</div>
+    
+    <!--the second and main nav-->
+		<nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top" style = "margin-bottom:50px;">
+
+<div id="navb" class="navbar-collapse collapse hide">
+	<ul class="navbar-nav">
+		<li class="nav-item active">
+			<a class="nav-link" href="index.php">Home</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">Contact Us</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">About Us</a>
+		</li>
+	</ul>
+
+	<ul class="nav navbar-nav ml-auto">
+		<li class="nav-item">
+			<a class="nav-link" href="logout.php"><span class="fas fa-sign-in-alt"></span>Logout</a>
+		</li>
+	</ul>
+</div>
+</nav>
     
 <section id="templates">
 
@@ -109,10 +162,12 @@ function display_data(){
 		$thread_len = count($thread);
 		echo  "<div class = 'container'>";
 		for($i = 0; $i < $thread_len; $i++){
-			echo "<div id = 'thread".$i."' class = 'jumbotron'>";
-			echo "<b><p class = 'this'>Posted by :".$thread[$i]['first_name']."</p></b>";
+			echo "<div id = 'thread".$i."' class = 'jumbotron' style = 'border-bottom:solid black 1px;border-radius:0;margin-bottom:0;background-color:#e6ebf4;border-bottom:'solid black 1px;'>";
+			echo "<b><p style = 'border-radius:10px;' class = 'p-3 mb-2 bg-success text-white'>Posted by :".$thread[$i]['first_name']."</p></b>";
 			echo "<p class = 'this'><b>Date posted: </b>".$thread[$i]['thread_created_date']."</p>";
-			echo "<p id = '".$i."' class = 'text-muted'>".$thread[$i]['thread_data']."</p>";
+			echo "<div style = 'background-color:white;border:solid black 1px;'>";
+			echo "<p style = 'padding:20px;' id = '".$i."' class = 'text-muted'>".$thread[$i]['thread_data']."</p>";
+			echo "</div>";
 			echo "</div>";
 		}
 		echo "</div>";
@@ -120,56 +175,24 @@ function display_data(){
 		
 ?>
 </section>
+    <div class = "container">
+		<div id = 'thread".$i."' class = 'jumbotron' style = 'background-color:white;'>
   <form method = "post">
            <h2 class = "text-muted">Start a new thread</h2>
 		   <textarea id = "threadArea" rows = '5' cols = '100' name="thread" class = "form-control"></textarea></br></br>
 		   
-		   <input type = "submit" name = "new_thread" value = "Post Thread" class = 'btn btn-primary'/>
-		   <input type = "submit" id = "red_posts" name = "red_posts" value = "back" class = 'btn btn-primary'/>
+		   <input type = "submit" name = "new_thread" value = "Post Thread" class = 'btn btn-primary' style ="margin-bottom:20px;"/>
+		   <input type = "submit" id = "red_posts" name = "red_posts" value = "back" class = 'btn btn-primary' style ="margin-bottom:20px;"/>
 	</form>
-	        
+	  </div> 
+		</div>     
 	
-	<?php
-   
-      if(isset($_POST['red_posts'])){
-		header("location: http://localhost/app/post_master.php");
-	  }
-
-	   function save_thread($thread){
-			  $db1= new mysqli('localhost','londoners','London123!','Londoners');
-			  
-				$qry = "insert into post_threads (post_master_id,member_id,previous_thread_id,thread_data) values (".$_SESSION['thread_post_id'].",".$_SESSION['id'].",1,'".$thread."');";
-		
-
-			  if($db1->query($qry) !== true){
-				//echo $_SESSION['id'];
-				echo "<p style = 'color:red;'>Error in posting! Please try again.</p></br>";
-                  echo $db1->error;
-				
-			  }else{
-				echo "<p style = 'color:green;'>New thread created</p></br>";
-				}
-				
-		 }
-		 
-
-     ?>			
   
-	<footer id="footer" class="footer-info">
-
-			
-			<p class="footer-links">
-				<a href="#">Home</a>
-				·
-				<a href="#">About</a>
-				·
-				<a href="mailto:webmaster@example.com">Email</a>
-				·
-				<a href="tel:555-555-5555">Call us</a>
-			</p>
-
-			<p class="footer-company-name"> &copy; 2018</p>
-	</footer>
+	<footer class = "inverse">
+        <div class = "container">
+          <p class = "text-center" style="color:white;margin-top:50px;">&copy; Copyright 2019 The Londoners</p>
+        </div>
+    </footer>
 
 
 </body>
