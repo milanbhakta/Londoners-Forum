@@ -135,18 +135,21 @@ function display_data(){
 	 
 	 
 	 $query = "select * from member_profile INNER JOIN post_threads
-	           ON post_threads.member_id = member_profile.member_id where post_threads.post_master_id = ".$_SESSION['thread_post_id'] .";";
+	           ON post_threads.member_id = member_profile.member_id WHERE post_threads.post_master_id = ".$_SESSION['thread_post_id'] .";";
 	 
+	 $post_query = "select * from post_master INNER JOIN member_profile ON post_master.member_id = member_profile.member_id where post_master.post_master_id = ".$_SESSION['thread_post_id'].";";				 
 
 	 if($db->query($query) == true){
       
 		$rs = $db->query($query); 
 			if($rs->num_rows > 0){
 				$thread = array();
+			
 			   while($row = $rs->fetch_assoc()){
 				  array_push($thread,$row);
 				  //print_r($thread[0]);
-			   }
+				 }
+	
 
 			}else{
 				echo "No threads to display";
@@ -158,16 +161,75 @@ function display_data(){
 			echo "Connection error";
 			exit;
 		}  
+////////////////////////////////////////////////////////////////////////////
+		if($db->query($post_query) == true){
+      
+			$rs = $db->query($post_query); 
+				if($rs->num_rows > 0){
+					$posts = array();
+				
+					 while($row = $rs->fetch_assoc()){
+						array_push($posts,$row);
+						//print_r($thread[0]);
+					 }
+		
+	
+				}
+				
+			}else{
+				echo "Connection error";
+				exit;
+			}  
      
 		$thread_len = count($thread);
+		$post_len = count($posts);
+		
+		echo "<div class = 'container'>";
+		echo     "<center><h1 class = 'center'>Selected Post By ".$posts[0]['first_name']."</h1></center>";
+		echo "</div>";
+
+    echo  "<div class = 'container'>";
+		for($n = 0; $n < $post_len ; $n++){
+				
+		echo	"<div class = 'jumbotron' style = 'border-radius:0 50px 0 50px;'>";
+		echo 	"<div class='row'>";
+
+		echo		         "<div class='col-sm-8'>";
+		echo   		          "<p class = 'p-3 mb-2 border border-top-0'>Posted By : ".$posts[$n]['first_name']." ". $posts[$n]['last_name']."</p>";
+	  echo		         "</div>";
+						 
+		echo	          "<div class='col-sm-4'>";
+		echo		   				 "<p class = 'p-3 mb-2 border border-top-0'>Date : ".$posts[$n]['approved_date']."</p>";
+		echo	 "</div>";
+
+		echo      "</div>";
+
+		echo 	"<div class='row'>";
+		echo		 "<div class='col-sm-12'>";
+		echo   		   "<b><p class = 'p-3 mb-2 border border-top-0 text-info'>".strtoupper($posts[$n]['post_heading'])."</p></b>";
+		echo		 "</div>";
+		echo		 "</div>";
+
+		echo 	"<div class='row'>";
+		echo		 "<div class='col-sm-12'>";
+		echo   		   "<p class = 'p-3 mb-2 border border-bottom-0'>".$posts[$n]['contents']."</p>";
+		echo		 "</div>";
+		echo		 "</div>";
+				break;
+		}
+		echo "</div>";
+    echo "</div>";
+		 
+
 		echo  "<div class = 'container'>";
+		echo     "<center><h3 class = 'center'>Find out about ".$posts[0]['post_heading']." </h3></center>";
 		for($i = 0; $i < $thread_len; $i++){
 			echo "<div id = 'thread".$i."' class = 'jumbotron' style = 'border-bottom:solid black 1px;border-radius:0;margin-bottom:0;background-color:#e6ebf4;border-bottom:'solid black 1px;'>";
-			echo "<b><p style = 'border-radius:10px;' class = 'p-3 mb-2 bg-success text-white'>Posted by :".$thread[$i]['first_name']."</p></b>";
-			echo "<p class = 'this'><b>Date posted: </b>".$thread[$i]['thread_created_date']."</p>";
+			echo "<b><p style = 'background-color:#848991;border-radius:10px;' class = 'p-3 mb-2 text-white'>Reply by : ".$thread[$i]['first_name']."</p></b>";
 			echo "<div style = 'background-color:white;border:solid black 1px;'>";
 			echo "<p style = 'padding:20px;' id = '".$i."' class = 'text-muted'>".$thread[$i]['thread_data']."</p>";
 			echo "</div>";
+			echo "<p style = 'margin-top:5px;' class = 'this'>Date posted : ".$thread[$i]['thread_created_date']."</p>";
 			echo "</div>";
 		}
 		echo "</div>";
@@ -187,6 +249,8 @@ function display_data(){
 	  </div> 
 		</div>     
 	
+	
+	</div>
   
 	<footer class = "inverse">
         <div class = "container">
