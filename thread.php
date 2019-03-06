@@ -185,7 +185,7 @@ function display_data(){
 		$post_len = count($posts);
 		
 		echo "<div class = 'container'>";
-		echo     "<center><h1 class = 'center'>Selected Post By ".$posts[0]['first_name']."</h1></center>";
+		echo     "<center><h1 class = 'center text-white'>Selected Post By ".$posts[0]['first_name']."</h1></center>";
 		echo "</div>";
 
     echo  "<div class = 'container'>";
@@ -222,14 +222,23 @@ function display_data(){
 		 
 
 		echo  "<div class = 'container'>";
-		echo     "<center><h3 class = 'center'>Find out about ".$posts[0]['post_heading']." </h3></center>";
+		echo     "<center><h3 class = 'center text-white' >Find out about ".$posts[0]['post_heading']." </h3></center>";
 		for($i = 0; $i < $thread_len; $i++){
-			echo "<div id = 'thread".$i."' class = 'jumbotron' style = 'border-bottom:solid black 1px;border-radius:0;margin-bottom:0;background-color:#e6ebf4;border-bottom:'solid black 1px;'>";
-			echo "<b><p style = 'background-color:#848991;border-radius:10px;' class = 'p-3 mb-2 text-white'>Reply by : ".$thread[$i]['first_name']."</p></b>";
-			echo "<div style = 'background-color:white;border:solid black 1px;'>";
-			echo "<p style = 'padding:20px;' id = '".$i."' class = 'text-muted'>".$thread[$i]['thread_data']."</p>";
+			echo "<div id = 'thread".$i."' class = 'jumbotron' style = 'border-radius:0;margin-bottom:0;background-color:white;border-bottom:'solid black 1px;'>";
+
+			echo "<div class = 'row'>";
+			echo		 "<div class='col-sm-8'>";
+			echo   		   "<b><p class = 'p-3 mb-2 border border-top-0 text-dark'>Reply by : ".$thread[$i]['first_name'] ." ".$thread[$i]['last_name'] ."</p></b>";
+			echo		 "</div>";
+
+			echo		 "<div class='col-sm-4'>";
+			echo   		   "<b><p class = 'p-3 mb-2 border border-top-0 text-dark'>Date : ".$thread[$i]['thread_created_date'] ." ".$thread[$i]['last_name'] ."</p></b>";
+			echo		 "</div>";
 			echo "</div>";
-			echo "<p style = 'margin-top:5px;' class = 'this'>Date posted : ".$thread[$i]['thread_created_date']."</p>";
+			echo "<div style = 'background-color:white;' class = ' p-3 mb-2 border border-top-0'>";
+			echo "<p style = 'padding:20px;' id = '".$i."' class = 'text-dark'>".$thread[$i]['thread_data']."</p>";
+			echo "</div>";
+	
 			echo "</div>";
 		}
 		echo "</div>";
@@ -238,9 +247,9 @@ function display_data(){
 ?>
 </section>
     <div class = "container">
-		<div id = 'thread".$i."' class = 'jumbotron' style = 'background-color:white;'>
+		<div id = 'thread".$i."' class = 'jumbotron' style = 'background-color:white;border-radius:0;margin-top:10px;'>
   <form method = "post">
-           <h2 class = "text-muted">Start a new thread</h2>
+           <h2 class = "text-dark">Start a new thread</h2>
 		   <textarea id = "threadArea" rows = '5' cols = '100' name="thread" class = "form-control"></textarea></br></br>
 		   
 		   <input type = "submit" name = "new_thread" value = "Post Thread" class = 'btn btn-primary' style ="margin-bottom:20px;"/>
